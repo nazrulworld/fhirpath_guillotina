@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+fhirpath_guillotina = {editable = true,extras = ["test"],path = "."}
+black = "*"
+isort = "*"
+flake8 = "*"
+flake8-isort = "*"
+zc-buildout = "*"
+setuptools = "*"
+
+[packages]
+fhirpath = {git = 'git+https://github.com/nazrulworld/fhirpath.git'}
+sphinx = "*"
+sphinx-rtd-theme = "*"
+sphinxcontrib-httpdomain = "*"
+sphinxcontrib-httpexample = "*"
+tox = "*"
+certifi = "*"
+zest-releaser = {extras = ["recommended"],version = "*"}
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
