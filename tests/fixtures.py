@@ -7,13 +7,16 @@ import os
 import pathlib
 import subprocess
 import uuid
-from isodate import datetime_isoformat
-import datetime
-import pytz
 
 import pytest
 from fhir.resources.organization import Organization as fhir_org
 from fhir.resources.task import Task as fhir_task
+from fhirpath.connectors import create_connection
+from fhirpath.engine import create_engine
+from fhirpath.enums import FHIR_VERSION
+from fhirpath.fhirspec import DEFAULT_SETTINGS
+from fhirpath.thirdparty import attrdict
+from fhirpath.utils import proxy
 from guillotina import configure
 from guillotina import testing
 from guillotina.api.service import Service
@@ -29,16 +32,10 @@ from guillotina_elasticsearch.interfaces import IContentIndex
 from guillotina_elasticsearch.tests.fixtures import elasticsearch
 from zope.interface import implementer
 
-from fhirpath.engine import create_engine
-from fhirpath.enums import FHIR_VERSION
-from fhirpath.fhirspec import DEFAULT_SETTINGS
-from fhirpath.providers.guillotina_app.field import FhirField
-from fhirpath.providers.guillotina_app.helpers import FHIR_ES_MAPPINGS_CACHE
-from fhirpath.providers.guillotina_app.interfaces import IFhirContent
-from fhirpath.providers.guillotina_app.interfaces import IFhirResource
-from fhirpath.thirdparty import attrdict
-from fhirpath.utils import proxy
-from fhirpath.connectors import create_connection
+from fhirpath_guillotina.field import FhirField
+from fhirpath_guillotina.helpers import FHIR_ES_MAPPINGS_CACHE
+from fhirpath_guillotina.interfaces import IFhirContent
+from fhirpath_guillotina.interfaces import IFhirResource
 
 
 __author__ = "Md Nazrul Islam<email2nazrul@gmail.com>"
@@ -52,9 +49,8 @@ ES_JSON_MAPPING_DIR = (
     / "R4"
 )
 FHIR_RESOURCE_DIR = (
-    pathlib.Path(os.path.dirname(os.path.abspath(__file__)))
-    / "static"
-    / "FHIR")
+    pathlib.Path(os.path.dirname(os.path.abspath(__file__))) / "_static" / "FHIR"
+)
 
 ES_INDEX_NAME = "fhirpath_elasticsearch_index"
 ES_INDEX_NAME_REAL = "fhirpath_elasticsearch_index_1"
@@ -71,7 +67,7 @@ def base_settings_configurator(settings):
         settings["applications"].append("guillotina_elasticsearch.testing")
 
     # Add App
-    settings["applications"].append("fhirpath.providers.guillotina_app")
+    settings["applications"].append("fhirpath_guillotina")
     settings["applications"].append("tests.fixtures")
 
     settings["elasticsearch"] = {
@@ -95,112 +91,6 @@ def base_settings_configurator(settings):
 
 
 testing.configure_with(base_settings_configurator)
-
-
-async def _setup_es_index(conn):
-    """ """
-    settings = {
-        "analysis": {
-            "analyzer": {"path_analyzer": {"tokenizer": "path_tokenizer"}},
-            "char_filter": {},
-            "filter": {},
-            "tokenizer": {
-                "path_tokenizer": {"delimiter": "/", "type": "path_hierarchy"}
-            },
-        },
-        "mappings": {
-            "dynamic": False,
-            "properties": {
-                "access_roles": {"index": True, "store": True, "type": "keyword"},
-                "access_users": {"index": True, "store": True, "type": "keyword"},
-                "creation_date": {"store": True, "type": "date"},
-                "depth": {"type": "integer"},
-                "elastic_index": {"index": True, "store": True, "type": "keyword"},
-                "id": {"index": True, "store": True, "type": "keyword"},
-                "modification_date": {"store": True, "type": "date"},
-                "p_type": {"index": True, "type": "keyword"},
-                "parent_uuid": {"index": True, "store": True, "type": "keyword"},
-                "path": {"analyzer": "path_analyzer", "store": True, "type": "text"},
-                "tid": {"index": True, "store": True, "type": "keyword"},
-                "title": {"index": True, "store": True, "type": "text"},
-                "uuid": {"index": True, "store": True, "type": "keyword"},
-            },
-        },
-    }
-
-    org_mapping = fhir_resource_mapping("Organization")
-    patient_mapping = fhir_resource_mapping("Patient")
-    settings["mappings"]["properties"]["organization_resource"] = org_mapping
-    settings["mappings"]["properties"]["patient_resource"] = patient_mapping
-
-    await conn.indices.create(ES_INDEX_NAME_REAL, {"settings": settings})
-    await conn.indices.refresh(index=ES_INDEX_NAME_REAL)
-
-
-def _make_index_item(resource_type):
-    """ """
-
-    id_prefix = "2c1|"
-    uuid_ = uuid.uuid4().hex
-    now_time = datetime.datetime.now()
-    now_time.replace(tzinfo=pytz.UTC)
-
-    tpl = {
-        "access_roles": [
-            "guillotina.Reader",
-            "guillotina.Reviewer",
-            "guillotina.Owner",
-            "guillotina.Editor",
-            "guillotina.ContainerAdmin",
-        ],
-        "access_users": ["root"],
-        "creation_date": datetime_isoformat(now_time),
-        "depth": 2,
-        "elastic_index": "{0}__{1}-{2}".format(
-            ES_INDEX_NAME, resource_type.lower(), uuid_
-        ),
-        "id": None,
-        "organization_resource": None,
-        "parent_uuid": "2c1a8a1403a743608aafc294b6e822af",
-        "path": "/f001",
-        "tid": 8,
-        "title": "Burgers University Medical Center",
-        "uuid": id_prefix + uuid_,
-    }
-
-    with open(str(FHIR_EXAMPLE_RESOURCES))
-
-
-async def _load_es_data(conn):
-    """ """
-    bulk_data = [
-        {
-            "index": {
-                "_id": "2c1|c65af61262d944b99e46ba88b7a61512",
-                "_index": "guillotina-db-guillotina_1",
-            }
-        },
-        {
-            "access_roles": [
-                "guillotina.Reader",
-                "guillotina.Reviewer",
-                "guillotina.Owner",
-                "guillotina.Editor",
-                "guillotina.ContainerAdmin",
-            ],
-            "access_users": ["root"],
-            "creation_date": "2019-08-23T11:50:43.287601+00:00",
-            "depth": 1,
-            "elastic_index": "guillotina-db-guillotina__organization-c65af61262d944b99e46ba88b7a61512",
-            "id": "f001",
-            "organization_resource": None,
-            "parent_uuid": "2c1a8a1403a743608aafc294b6e822af",
-            "path": "/f001",
-            "tid": 8,
-            "title": "Burgers University Medical Center",
-            "uuid": "2c1|c65af61262d944b99e46ba88b7a61512",
-        },
-    ]
 
 
 @pytest.fixture
@@ -409,7 +299,7 @@ class IWrongInterface(IFhirResource):
 
 
 FHIR_EXAMPLE_RESOURCES = (
-    pathlib.Path(os.path.abspath(__file__)).parent / "static" / "FHIR"
+    pathlib.Path(os.path.abspath(__file__)).parent / "_static" / "FHIR"
 )
 
 

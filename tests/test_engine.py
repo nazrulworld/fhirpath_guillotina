@@ -1,12 +1,12 @@
 # _*_ coding: utf-8 _*_
-from guillotina.component import query_utility
-from guillotina_elasticsearch.tests.utils import setup_txn_on_container
-
 from fhirpath.enums import FHIR_VERSION
 from fhirpath.fql import Q_
 from fhirpath.fql import T_
-from fhirpath.providers.guillotina_app.engine import EsEngine
-from fhirpath.providers.guillotina_app.interfaces import IElasticsearchEngineFactory
+from guillotina.component import query_utility
+from guillotina_elasticsearch.tests.utils import setup_txn_on_container
+
+from fhirpath_guillotina.engine import EsEngine
+from fhirpath_guillotina.interfaces import IElasticsearchEngineFactory
 
 from .fixtures import init_data
 from .fixtures import load_organizations_data
@@ -37,7 +37,7 @@ async def test_raw_result(es_requester):
 
         index_name = await engine.get_index_name(container)
 
-        conn = engine.connection.raw_connection()
+        conn = engine.connection.raw_connection
         await conn.indices.refresh(index=index_name)
 
         query = Q_(resource="Organization", engine=engine)

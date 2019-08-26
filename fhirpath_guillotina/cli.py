@@ -2,6 +2,7 @@
 
 """Console script for fhirpath_guillotina."""
 import sys
+
 import click
 
 

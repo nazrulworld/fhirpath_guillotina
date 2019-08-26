@@ -8,7 +8,7 @@ import pathlib
 import pickle
 
 import pytest
-import ujson as json
+from fhirpath.utils import lookup_fhir_class
 from guillotina.component import get_multi_adapter
 from guillotina.component import get_utility
 from guillotina.component import query_adapter
@@ -24,21 +24,21 @@ from guillotina.schema.exceptions import WrongType
 from zope.interface import Invalid
 from zope.interface import implementer
 
-from fhirpath.providers.guillotina_app.field import FhirField
-from fhirpath.providers.guillotina_app.field import FhirFieldValue
-from fhirpath.providers.guillotina_app.field import fhir_field_from_resource_type
-from fhirpath.providers.guillotina_app.field import fhir_field_from_schema
-from fhirpath.providers.guillotina_app.helpers import parse_json_str
-from fhirpath.providers.guillotina_app.interfaces import IFhirField
-from fhirpath.providers.guillotina_app.interfaces import IFhirFieldValue
-from fhirpath.providers.guillotina_app.interfaces import IFhirResource
-from fhirpath.utils import lookup_fhir_class
+import ujson as json
+from fhirpath_guillotina.field import FhirField
+from fhirpath_guillotina.field import FhirFieldValue
+from fhirpath_guillotina.field import fhir_field_from_resource_type
+from fhirpath_guillotina.field import fhir_field_from_schema
+from fhirpath_guillotina.helpers import parse_json_str
+from fhirpath_guillotina.interfaces import IFhirField
+from fhirpath_guillotina.interfaces import IFhirFieldValue
+from fhirpath_guillotina.interfaces import IFhirResource
 
 from .fixtures import IOrganization
 
 
 FHIR_EXAMPLE_RESOURCES = (
-    pathlib.Path(os.path.abspath(__file__)).parent / "static" / "FHIR"
+    pathlib.Path(os.path.abspath(__file__)).parent / "_static" / "FHIR"
 )
 
 
@@ -59,7 +59,7 @@ def test_field_init_validate(dummy_guillotina):  # noqa: C901,E999
             title="Organization resource",
             resource_class="tests.fixtures.MyOrganizationResource",
             resource_interface=(
-                "fhirpath.providers." "guillotina_app.interfaces.IFhirResource"
+                "fhirpath_guillotina.interfaces.IFhirResource"
             ),
             fhir_version="R4",
         )
@@ -226,7 +226,7 @@ def test_field_validate(dummy_guillotina):
         fhir_field._validate(dict(hello="wrong"))
         raise AssertionError("Code should not come here! wrong data type is provide")
     except WrongType as exc:
-        assert "fhirpath.providers.guillotina_app.field.FhirFieldValue" in str(
+        assert "fhirpath_guillotina.field.FhirFieldValue" in str(
             exc
         )
 
