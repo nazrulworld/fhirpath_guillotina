@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from guillotina import configure
 
+
 __author__ = """Md Nazrul Islam"""
 __email__ = "email2nazrul@gmail.com"
 __version__ = "0.1.0"

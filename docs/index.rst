@@ -1,5 +1,5 @@
 Welcome to fhirpath-guillotina's documentation!
-======================================
+===============================================
 
 .. toctree::
    :maxdepth: 2

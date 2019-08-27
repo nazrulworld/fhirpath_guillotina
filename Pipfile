@@ -13,7 +13,7 @@ zc-buildout = "*"
 setuptools = "*"
 
 [packages]
-fhirpath = {git = 'git+https://github.com/nazrulworld/fhirpath.git'}
+fhirpath = {git = 'git+https://github.com/nazrulworld/fhirpath.git', ref = 'master'}
 sphinx = "*"
 sphinx-rtd-theme = "*"
 sphinxcontrib-httpdomain = "*"
