@@ -11,8 +11,8 @@ from guillotina import configure
 from guillotina.component import get_utility
 from guillotina_elasticsearch.interfaces import IElasticSearchUtility
 
-from .engine import EsConnection
-from .engine import EsEngine
+from .engine import ElasticsearchConnection
+from .engine import ElasticsearchEngine
 from .interfaces import IElasticsearchEngineFactory
 from .interfaces import IFhirSearch
 
@@ -38,19 +38,19 @@ def create_engine(fhir_version=None):
 
     def es_conn_factory(engine):
         prepared_conn = get_utility(IElasticSearchUtility).get_connection()
-        return EsConnection.from_prepared(prepared_conn)
+        return ElasticsearchConnection.from_prepared(prepared_conn)
 
     def es_dialect_factory(engine):
         """ """
         return ElasticSearchDialect(connection=engine.connection)
 
-    engine_ = EsEngine(fhir_version, es_conn_factory, es_dialect_factory)
+    engine_ = ElasticsearchEngine(fhir_version, es_conn_factory, es_dialect_factory)
 
     return engine_
 
 
 @configure.utility(provides=IElasticsearchEngineFactory)
-class EsEngineFactory:
+class ElasticsearchEngineFactory:
     """ """
 
     def get(self, fhir_version=None):

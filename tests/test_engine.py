@@ -1,11 +1,12 @@
 # _*_ coding: utf-8 _*_
+import pytest
 from fhirpath.enums import FHIR_VERSION
 from fhirpath.fql import Q_
 from fhirpath.fql import T_
 from guillotina.component import query_utility
 from guillotina_elasticsearch.tests.utils import setup_txn_on_container
 
-from fhirpath_guillotina.engine import EsEngine
+from fhirpath_guillotina.engine import ElasticsearchEngine
 from fhirpath_guillotina.interfaces import IElasticsearchEngineFactory
 
 from .fixtures import init_data
@@ -17,13 +18,15 @@ __author__ = "Md Nazrul Islam<email2nazrul@gmail.com>"
 
 def test_engine_calculate_field_index_name(dummy_guillotina):
     """ """
-    engine = EsEngine(FHIR_VERSION.DEFAULT, lambda x: "Y", lambda x: "Y")
-    name = engine.calculate_field_index_name("Organization")
+    engine = ElasticsearchEngine(FHIR_VERSION.DEFAULT, lambda x: "Y", lambda x: "Y")
+    index_config = engine._find_field_index_config("Organization")
+    name = engine.calculate_field_index_name(index_config)
 
     assert name == "organization_resource"
 
-    name = engine.calculate_field_index_name("NonRegisteredContentType")
-    assert name is None
+    index_config = engine._find_field_index_config("NonRegisteredContentType")
+    with pytest.raises(LookupError):
+        engine.calculate_field_index_name(index_config)
 
 
 async def test_raw_result(es_requester):

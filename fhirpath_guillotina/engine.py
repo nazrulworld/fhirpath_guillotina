@@ -2,11 +2,11 @@
 import logging
 
 from fhirpath.connectors import create_connection
-from fhirpath.connectors.connection import Connection
-from fhirpath.engine import Engine
+from fhirpath.connectors.factory.es import ElasticsearchConnection as BaseConnection
 from fhirpath.engine import EngineResult
 from fhirpath.engine import EngineResultBody
 from fhirpath.engine import EngineResultHeader
+from fhirpath.engine.es import ElasticsearchEngine as BaseEngine
 from fhirpath.utils import BundleWrapper
 from guillotina.component import get_adapter
 from guillotina.component import get_utilities_for
@@ -26,7 +26,7 @@ __author__ = "Md Nazrul Islam <email2nazrul@gmail.com>"
 logger = logging.getLogger("fhirpath.providers.guillotina.engine")
 
 
-class EsConnection(Connection):
+class ElasticsearchConnection(BaseConnection):
     """Elasticsearch Connection"""
 
     @classmethod
@@ -88,7 +88,7 @@ class EsConnection(Connection):
         return result
 
 
-class EsEngine(Engine):
+class ElasticsearchEngine(BaseEngine):
     """Elasticsearch Engine"""
 
     async def get_index_name(self, container=None):
@@ -104,9 +104,14 @@ class EsEngine(Engine):
         """ """
         # for now we support single from resource
         resource_type = query.get_from()[0][1].resource_type
-        field_index_name = self.calculate_field_index_name(resource_type)
+        index_config = self._find_field_index_config(resource_type)
+        field_index_name = self.calculate_field_index_name(index_config)
 
-        params = {"query": query, "root_replacer": field_index_name}
+        params = {
+            "query": query,
+            "root_replacer": field_index_name,
+            "mapping": self.get_mapping(index_config=index_config),
+        }
         if unrestricted is False:
             params["security_callable"] = self.build_security_query
 
@@ -135,27 +140,36 @@ class EsEngine(Engine):
 
         return {"access_roles": roles, "access_users": users}
 
-    def calculate_field_index_name(self, resource_types):
+    def calculate_field_index_name(self, index_config):
         """1.) xxx: should be cached
         """
-        factory = query_utility(IResourceFactory, name=resource_types)
+        name, config = index_config
+        if name is None:
+            raise LookupError("No index found for fhirfield associated with Resource")
+        return name
+
+    def _find_field_index_config(self, resource_type):
+        """1.) xxx: should be cached
+        """
+        factory = query_utility(IResourceFactory, name=resource_type)
         if factory:
-            name = EsEngine.field_index_name_from_factory(
-                factory, resource_type=resource_types
+            name, config = ElasticsearchEngine.field_index_config_from_factory(
+                factory, resource_type=resource_type
             )
             if name:
-                return name
+                return name, config
 
         types = [x[1] for x in get_utilities_for(IResourceFactory)]
         for factory in types:
-            name = EsEngine.field_index_name_from_factory(
-                factory, resource_type=resource_types
+            name, config = ElasticsearchEngine.field_index_config_from_factory(
+                factory, resource_type=resource_type
             )
             if name:
-                return name
+                return name, config
+        return None, None
 
     @staticmethod
-    def field_index_name_from_factory(factory, resource_type=None):
+    def field_index_config_from_factory(factory, resource_type=None):
         """ """
         if resource_type is None:
             resource_type = factory.type_name
@@ -169,20 +183,21 @@ class EsEngine(Engine):
                     and configs["fhirpath_enabled"] is True
                 ):
                     if resource_type == configs["resource_type"]:
-                        return name
-            return None
+                        return name, configs
+            return None, None
 
-        name = _find(factory.schema)
+        name, config = _find(factory.schema)
         if name is not None:
-            return name
+            return name, config
 
         for behavior in factory.behaviors:
             tagged_query = getattr(behavior, "queryTaggedValue", None)
             if tagged_query is None:
                 continue
-            name = _find(behavior)
+            name, config = _find(behavior)
             if name is not None:
-                return name
+                return name, config
+        return None, None
 
     async def process_raw_result(self, rawresult, fieldname):
         """ """
@@ -224,3 +239,12 @@ class EsEngine(Engine):
         url = request.rel_url
         wrapper = BundleWrapper(self, result, url, "searchset")
         return wrapper()
+
+    def get_mapping(self, resource_type=None, index_config=None):
+        """ """
+        if index_config is None and resource_type:
+            index_config = self._find_field_index_config(resource_type)
+
+        if index_config[0] is None:
+            raise LookupError("No index found for fhirfield associated with Resource")
+        return index_config[1]["field_mapping"]
