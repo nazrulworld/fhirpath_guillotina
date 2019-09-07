@@ -17,7 +17,6 @@ from guillotina.utils import get_authenticated_user
 from guillotina.utils import get_current_container
 from guillotina.utils import get_current_request
 from guillotina.utils import get_security_policy
-from guillotina_elasticsearch.exceptions import QueryErrorException
 from guillotina_elasticsearch.interfaces import IIndexManager
 
 
@@ -47,18 +46,6 @@ class ElasticsearchConnection(BaseConnection):
             )
         return info
 
-    def finalize_search_params(self, compiled_query):
-        """ """
-        compiled_query = compiled_query.copy()
-        params = dict()
-        params["from_"] = compiled_query.pop("from", 0)
-        params["size"] = compiled_query.pop("size", 100)
-        if "scroll" in compiled_query:
-            params["scroll"] = compiled_query.pop("scroll")
-        params["ignore_unavailable"] = compiled_query.pop("ignore_unavailable", True)
-        params["body"] = compiled_query
-        return params
-
     async def fetch(self, compiled_query):
         """xxx: must have use scroll+slice
         https://stackoverflow.com/questions/43211387/what-does-elasticsearch-automatic-slicing-do
@@ -69,15 +56,6 @@ class ElasticsearchConnection(BaseConnection):
         result = await conn.search(**search_params)
         self._evaluate_result(result)
         return result
-
-    def _evaluate_result(self, result):
-        """ """
-        if result.get("_shards", {}).get("failed", 0) > 0:
-            logger.warning(f'Error running query: {result["_shards"]}')
-            error_message = "Unknown"
-            for failure in result["_shards"].get("failures") or []:
-                error_message = failure["reason"]
-            raise QueryErrorException(reason=error_message)
 
     async def scroll(self, scroll_id, scroll="30s"):
         """ """
