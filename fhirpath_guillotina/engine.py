@@ -7,6 +7,12 @@ from fhirpath.engine import EngineResult
 from fhirpath.engine import EngineResultBody
 from fhirpath.engine import EngineResultHeader
 from fhirpath.engine.es import ElasticsearchEngine as BaseEngine
+from fhirpath.enums import GroupType
+from fhirpath.enums import MatchType
+from fhirpath.fql import G_
+from fhirpath.fql import T_
+from fhirpath.interfaces import IIgnoreNestedCheck
+from fhirpath.types import FhirString
 from fhirpath.utils import BundleWrapper
 from guillotina.component import get_adapter
 from guillotina.component import get_utilities_for
@@ -18,6 +24,7 @@ from guillotina.utils import get_current_container
 from guillotina.utils import get_current_request
 from guillotina.utils import get_security_policy
 from guillotina_elasticsearch.interfaces import IIndexManager
+from zope.interface import alsoProvides
 
 
 __author__ = "Md Nazrul Islam <email2nazrul@gmail.com>"
@@ -81,20 +88,8 @@ class ElasticsearchEngine(BaseEngine):
     async def execute(self, query, unrestricted=False):
         """ """
         # for now we support single from resource
-        resource_type = query.get_from()[0][1].resource_type
-        index_config = self._find_field_index_config(resource_type)
-        field_index_name = self.calculate_field_index_name(index_config)
-
-        params = {
-            "query": query,
-            "root_replacer": field_index_name,
-            "mapping": self.get_mapping(index_config=index_config),
-        }
-        if unrestricted is False:
-            params["security_callable"] = self.build_security_query
-
-        compiled = self.dialect.compile(**params)
-        raw_result = await self.connection.fetch(compiled)
+        awaitable, field_index_name, compiled = self._execute(query, unrestricted)
+        raw_result = await awaitable
 
         # xxx: process result
         result = await self.process_raw_result(raw_result, field_index_name)
@@ -102,7 +97,7 @@ class ElasticsearchEngine(BaseEngine):
 
         return result
 
-    def build_security_query(self):
+    def build_security_query(self, query):
         # The users who has plone.AccessContent permission by prinperm
         # The roles who has plone.AccessContent permission by roleperm
         users = []
@@ -116,11 +111,28 @@ class ElasticsearchEngine(BaseEngine):
         roles_dict = policy.global_principal_roles(user.id, user.groups)
         roles.extend([key for key, value in roles_dict.items() if value])
 
-        return {"access_roles": roles, "access_users": users}
+        terms = list()
+        for rl in roles:
+            term = T_("access_roles", value=FhirString(rl), non_fhir=True)
+            terms.append(term)
 
-    def calculate_field_index_name(self, index_config):
+        for usr in users:
+            term = T_("access_users", value=FhirString(usr), non_fhir=True)
+            terms.append(term)
+
+        group = G_(*terms, path=None, type_=GroupType.DECOUPLED)
+        group.match_operator = MatchType.ANY
+        alsoProvides(group, IIgnoreNestedCheck)
+        group.finalize(self)
+
+        query._where.append(group)
+
+    def calculate_field_index_name(self, resource_type=None, index_config=None):
         """1.) xxx: should be cached
         """
+        if index_config is None and resource_type:
+            index_config = self._find_field_index_config(resource_type)
+
         name, config = index_config
         if name is None:
             raise LookupError("No index found for fhirfield associated with Resource")
