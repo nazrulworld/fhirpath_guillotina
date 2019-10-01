@@ -34,7 +34,7 @@ setup(
     author="Md Nazrul Islam",
     author_email="email2nazrul@gmail.com",
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",

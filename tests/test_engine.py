@@ -1,7 +1,13 @@
 # _*_ coding: utf-8 _*_
 import pytest
 from fhirpath.enums import FHIR_VERSION
+from fhirpath.exceptions import MultipleResultsFound
 from fhirpath.fql import T_
+from fhirpath.fql import V_
+from fhirpath.fql import exists_
+from fhirpath.fql import in_
+from fhirpath.fql import not_
+from fhirpath.fql import not_in_
 from fhirpath.query import Q_
 from guillotina.component import query_utility
 from guillotina_elasticsearch.tests.utils import setup_txn_on_container
@@ -68,3 +74,129 @@ async def test_raw_result(es_requester):
         bundle = engine.wrapped_with_bundle(result)
 
         assert bundle.total == result.header.total
+
+
+async def test_exists_query(es_requester):
+    """ enteredDate"""
+    async with es_requester as requester:
+        container, request, txn, tm = await setup_txn_on_container(requester)  # noqa
+        # init primary data
+        await init_data(requester)
+        engine = query_utility(IElasticsearchEngineFactory).get()
+
+        index_name = await engine.get_index_name(container)
+
+        conn = engine.connection.raw_connection
+        await conn.indices.refresh(index=index_name)
+
+        builder = Q_(resource="ChargeItem", engine=engine)
+        builder = builder.where(exists_("ChargeItem.enteredDate"))
+
+        result = await builder(async_result=True).fetchall()
+        assert result.header.total == 1
+
+
+async def test_single_query(es_requester):
+    """ """
+    async with es_requester as requester:
+        container, request, txn, tm = await setup_txn_on_container(requester)  # noqa
+        # init primary data
+        await init_data(requester)
+        await load_organizations_data(requester, 2)
+        engine = query_utility(IElasticsearchEngineFactory).get()
+
+        index_name = await engine.get_index_name(container)
+
+        conn = engine.connection.raw_connection
+        await conn.indices.refresh(index=index_name)
+
+        builder = Q_(resource="ChargeItem", engine=engine)
+        builder = builder.where(exists_("ChargeItem.enteredDate"))
+
+        result = await builder(async_result=True).single()
+        assert result is not None
+        assert isinstance(result, builder._from[0][1])
+        # test empty result
+        builder = Q_(resource="ChargeItem", engine=engine)
+        builder = builder.where(not_(exists_("ChargeItem.enteredDate")))
+
+        result = await builder(async_result=True).single()
+        assert result is None
+
+        # Test Multiple Result error
+        builder = Q_(resource="Organization", engine=engine)
+        builder = builder.where(T_("Organization.active", "true"))
+
+        with pytest.raises(MultipleResultsFound) as excinfo:
+            await builder(async_result=True).single()
+        assert excinfo.type == MultipleResultsFound
+
+
+async def test_first_query(es_requester):
+    """ """
+    async with es_requester as requester:
+        container, request, txn, tm = await setup_txn_on_container(requester)  # noqa
+        # init primary data
+        await init_data(requester)
+        await load_organizations_data(requester, 5)
+        engine = query_utility(IElasticsearchEngineFactory).get()
+
+        index_name = await engine.get_index_name(container)
+
+        conn = engine.connection.raw_connection
+        await conn.indices.refresh(index=index_name)
+
+        builder = Q_(resource="Organization", engine=engine)
+        builder = builder.where(T_("Organization.active", "true"))
+
+        result = await builder(async_result=True).first()
+        assert isinstance(result, builder._from[0][1])
+
+        builder = Q_(resource="Organization", engine=engine)
+        builder = builder.where(T_("Organization.active", "false"))
+
+        result = await builder(async_result=True).first()
+        assert result is None
+
+
+async def test_in_query(es_requester):
+    """ """
+    async with es_requester as requester:
+        container, request, txn, tm = await setup_txn_on_container(requester)  # noqa
+        # init primary data
+        await init_data(requester)
+        engine = query_utility(IElasticsearchEngineFactory).get()
+
+        index_name = await engine.get_index_name(container)
+
+        conn = engine.connection.raw_connection
+        await conn.indices.refresh(index=index_name)
+
+        builder = Q_(resource="Organization", engine=engine)
+        builder = builder.where(T_("Organization.active") == V_("true")).where(
+            in_(
+                "Organization.meta.lastUpdated",
+                (
+                    "2010-05-28T05:35:56+00:00",
+                    "2001-05-28T05:35:56+00:00",
+                    "2018-05-28T05:35:56+00:00",
+                ),
+            )
+        )
+        result = await builder(async_result=True).fetchall()
+        assert result.header.total == 1
+
+        # Test NOT IN
+        builder = Q_(resource="Organization", engine=engine)
+        builder = builder.where(T_("Organization.active") == V_("true")).where(
+            not_in_(
+                "Organization.meta.lastUpdated",
+                (
+                    "2010-05-28T05:35:56+00:00",
+                    "2001-05-28T05:35:56+00:00",
+                    "2018-05-28T05:35:56+00:00",
+                ),
+            )
+        )
+        result = await builder(async_result=True).fetchall()
+        assert result.header.total == 0
