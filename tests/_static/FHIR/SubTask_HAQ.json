@@ -1,18 +1,45 @@
 {
-    "status": "ready",
-    "restriction": {
-        "repetitions": 1,
-        "recipient": [
-            {
-                "display": "Eelector Patient Full",
-                "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e"
-            }
-        ],
-        "period": {
-            "start": "2017-08-05T06:16:41",
-            "end": "2017-09-04T06:16:41"
-        }
+    "resourceType": "Task",
+    "id": "c32a996a-20b2-4d38-b7f0-67c74fba6993",
+    "meta": {
+        "versionId": "1.0.0",
+        "lastUpdated": "2018-01-15T06:31:18+00:00"
     },
+    "identifier": [
+        {
+            "use": "official",
+            "system": "http:/goodhealth.org/identifiers",
+            "value": "20170201-002"
+        },
+        {
+            "use": "official",
+            "system": "zitelab:fhir:task:uid",
+            "value": "c32a996a-20b2-4d38-b7f0-67c74fba6993"
+        }
+    ],
+    "groupIdentifier": {
+        "use": "official",
+        "system": "http:/goodhealth.org/accession/identifiers",
+        "value": "G20170201-001"
+    },
+    "partOf": [
+        {
+            "reference": "Task/5df31190-0ed4-45ba-8b16-3c689fc2e686",
+            "display": "Lipid Panel"
+        }
+    ],
+    "basedOn": [
+        {
+            "display": "Questionnaire/e1218e8a-2727-4889-a26e-84b56582d238",
+            "reference": "ProcedureRequest/0c57a6c9-c275-4a0a-bd96-701daf7bd7ce"
+        }
+    ],
+    "status": "accepted",
+    "businessStatus": {
+        "text": "waiting for patient"
+    },
+    "intent": "filler-order",
+    "priority": "routine",
     "code": {
         "text": "Sub Task",
         "coding": [
@@ -23,56 +50,46 @@
             }
         ]
     },
-    "description": "e1218e8a-2727-4889-a26e-84b56582d238 questionnaire",
+    "focus": {
+        "display": "BloodDraw ServiceRequest"
+    },
     "for": {
-        "display": "Eelector Patient Full",
-        "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e"
+        "reference": "Patient/example",
+        "display": "Peter James Chalmers"
     },
-    "groupIdentifier": {
-        "use": "official",
-        "system": "zitelab:fhir:task:uid",
-        "value": "Task/5df31190-0ed4-45ba-8b16-3c689fc2e686"
+    "encounter": {
+        "reference": "Encounter/example",
+        "display": "Example In-Patient Encounter"
     },
-    "resourceType": "Task",
-    "basedOn": [
-        {
-            "display": "Questionnaire/e1218e8a-2727-4889-a26e-84b56582d238",
-            "reference": "ProcedureRequest/0c57a6c9-c275-4a0a-bd96-701daf7bd7ce"
-        }
-    ],
-    "statusReason": {
-        "text": "Ordered from DANBIO by Elector HCP"
+    "executionPeriod": {
+        "start": "2016-10-31T08:45:05+10:00"
     },
-    "reason": {
-        "text": "As defined by the Elector eCRF"
-    },
-    "authoredOn": "2017-08-05T06:16:41",
-    "intent": "order",
+    "authoredOn": "2018-08-05T06:16:41+00:00",
+    "lastModified": "2018-08-05T06:16:41+00:00",
     "requester": {
-        "agent": {
-            "display": "",
-            "reference": "test-user"
-        }
+        "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
+        "display": "Clinical Laboratory @ Acme Hospital"
     },
+    "performerType": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/task-performer-type",
+                    "code": "performer",
+                    "display": "Performer"
+                }
+            ],
+            "text": "Performer"
+        }
+    ],
     "owner": {
-        "display": "Eelector Patient Full",
-        "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e"
+        "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
+        "display": "Clinical Laboratory @ Acme Hospital"
     },
-    "identifier": [
-        {
-            "use": "official",
-            "system": "zitelab:fhir:task:uid",
-            "value": "c32a996a-20b2-4d38-b7f0-67c74fba6993"
+    "restriction": {
+        "repetitions": 1,
+        "period": {
+            "end": "2016-11-01T09:45:05+10:00"
         }
-    ],
-    "id": "c32a996a-20b2-4d38-b7f0-67c74fba6993",
-    "partOf": [
-        {
-            "reference": "Task/5df31190-0ed4-45ba-8b16-3c689fc2e686"
-        }
-    ],
-    "meta": {
-        "versionId": "1.0.0",
-        "lastUpdated": "2018-01-15T06:31:18+00:00"
     }
 }

@@ -1,14 +1,34 @@
 {
-    "status": "draft",
-    "restriction": {
-        "repetitions": 1,
-        "recipient": [
-            {
-                "display": "Eelector Patient Full",
-                "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e"
-            }
-        ]
+    "resourceType": "Task",
+    "id": "ab2dbb9e-f91f-4add-afc0-3165ce2aece5",
+    "meta": {
+        "versionId": "1.0.0",
+        "lastUpdated": "2015-10-15T06:31:18+00:00"
     },
+    "identifier": [
+      {
+        "use": "official",
+        "system": "http:/goodhealth.org/identifiers",
+        "value": "20170201-002"
+      }
+    ],
+    "groupIdentifier": {
+      "use": "official",
+      "system": "http:/goodhealth.org/accession/identifiers",
+      "value": "G20170201-001"
+    },
+    "partOf": [
+      {
+        "reference": "Task/5df31190-0ed4-45ba-8b16-3c689fc2e686",
+        "display": "Lipid Panel"
+      }
+    ],
+    "status": "accepted",
+    "businessStatus": {
+      "text": "waiting for patient"
+    },
+    "intent": "filler-order",
+    "priority": "routine",
     "code": {
         "text": "Sub Task CRP",
         "coding": [
@@ -19,56 +39,52 @@
             }
         ]
     },
-    "description": "CRP measurement Task",
+    "focus": {
+      "display": "BloodDraw ServiceRequest"
+    },
     "for": {
-        "display": "Eelector Patient Full",
-        "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e"
+      "reference": "Patient/example",
+      "display": "Peter James Chalmers"
     },
-    "groupIdentifier": {
-        "use": "official",
-        "system": "zitelab:fhir:task:uid",
-        "value": "Task/34ba85ba69a646f295a72d3cadabd782"
+    "encounter": {
+      "reference": "Encounter/example",
+      "display": "Example In-Patient Encounter"
     },
-    "resourceType": "Task",
+    "executionPeriod": {
+      "start": "2016-10-31T08:45:05+10:00"
+    },
+    "authoredOn": "2016-10-31T08:45:05+10:00",
+    "lastModified": "2016-10-31T09:45:05+10:00",
+    "requester": {
+      "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
+      "display": "Clinical Laboratory @ Acme Hospital"
+    },
+    "performerType": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/task-performer-type",
+            "code": "performer",
+            "display": "Performer"
+          }
+        ],
+        "text": "Performer"
+      }
+    ],
+    "owner": {
+      "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
+      "display": "Clinical Laboratory @ Acme Hospital"
+    },
+    "restriction": {
+      "repetitions": 1,
+      "period": {
+        "end": "2016-11-01T09:45:05+10:00"
+      }
+    },
     "basedOn": [
         {
             "display": "ActivityDefinition/81b6deb409f14028996f31e520391af3",
             "reference": "DeviceRequest/f417c54ba33041ccbc5153f409adc9d6"
         }
-    ],
-    "statusReason": {
-        "text": "Ordered from DANBIO by Elector HCP"
-    },
-    "reason": {
-        "text": "As defined by the Elector eCRF"
-    },
-    "authoredOn": "2017-08-07T07:42:17",
-    "intent": "order",
-    "requester": {
-        "agent": {
-            "display": "",
-            "reference": "Practioner/test-user"
-        }
-    },
-    "owner": {
-        "display": "Dr. Hence",
-        "reference": "Practitioner/619c1ac0-821d-46d9-9d40-a61f2578cadf"
-    },
-    "identifier": [
-        {
-            "use": "official",
-            "system": "zitelab:fhir:task:uid",
-            "value": "Task/ab2dbb9e-f91f-4add-afc0-3165ce2aece5"
-        }
-    ],
-    "id": "ab2dbb9e-f91f-4add-afc0-3165ce2aece5",
-    "partOf": [
-        {
-            "reference": "Task/5df31190-0ed4-45ba-8b16-3c689fc2e686"
-        }
-    ],
-    "meta": {
-        "versionId": "1.0.0",
-        "lastUpdated": "2015-10-15T06:31:18+00:00"
-    }
-}
+    ]
+  }

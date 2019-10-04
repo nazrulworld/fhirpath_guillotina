@@ -81,6 +81,22 @@ def base_settings_configurator(settings):
             ],
             "sniffer_timeout": None,
         },
+        "default_settings": {
+            "analysis": {
+                "analyzer": {
+                    "path_analyzer": {"tokenizer": "path_tokenizer"},
+                    "fhir_reference_analyzer": {
+                        "tokenizer": "fhir_reference_tokenizer"
+                    },
+                },
+                "tokenizer": {
+                    "path_tokenizer": {"type": "path_hierarchy", "delimiter": "/"},
+                    "fhir_reference_tokenizer": {"type": "pattern", "pattern": "/"},
+                },
+                "filter": {},
+                "char_filter": {},
+            }
+        },
     }
 
     settings["load_utilities"]["catalog"] = {
@@ -228,6 +244,30 @@ class ChargeItem(Item):
     resource_type = "ChargeItem"
 
 
+class ITask(IFhirContent, IContentIndex):
+
+    index_field(
+        "task_resource",
+        type="object",
+        field_mapping=fhir_resource_mapping("Task"),
+        fhirpath_enabled=True,
+        resource_type="Task",
+        fhir_version=FHIR_VERSION.DEFAULT,
+    )
+
+    task_resource = FhirField(
+        title="Task Item Resource", resource_type="Task", fhir_version="R4"
+    )
+
+
+@configure.contenttype(type_name="Task", schema=ITask)
+class Task(Item):
+    """ """
+
+    index(schemas=[ITask], settings={})
+    resource_type = "Task"
+
+
 class IMedicationRequest(IFhirContent, IContentIndex):
 
     index_field(
@@ -323,6 +363,48 @@ async def init_data(requester):
     )
     assert status == 201
 
+    with open(str(FHIR_EXAMPLE_RESOURCES / "Organization.json"), "r") as fp:
+        data = json.load(fp)
+        data["id"] = "f002"
+        data["meta"]["lastUpdated"] = "2015-05-28T05:35:56+00:00"
+        data["meta"]["profile"] = ["http://hl7.org/fhir/Organization"]
+        data["name"] = "Hamid Patuary University"
+        resp, status = await requester(
+            "POST",
+            "/db/guillotina/",
+            data=json.dumps(
+                {
+                    "@type": "Organization",
+                    "title": data["name"],
+                    "id": data["id"],
+                    "organization_resource": data,
+                    "org_type": "ABT",
+                }
+            ),
+        )
+        assert status == 201
+
+    with open(str(FHIR_EXAMPLE_RESOURCES / "Organization.json"), "r") as fp:
+        data = json.load(fp)
+        data["id"] = "f003"
+        data["meta"]["lastUpdated"] = "2019-10-03T05:35:56+00:00"
+        data["meta"]["profile"] = ["http://hl7.org/fhir/Meta", "urn:oid:002.160"]
+        data["name"] = "Call trun University"
+        resp, status = await requester(
+            "POST",
+            "/db/guillotina/",
+            data=json.dumps(
+                {
+                    "@type": "Organization",
+                    "title": data["name"],
+                    "id": data["id"],
+                    "organization_resource": data,
+                    "org_type": "ABT",
+                }
+            ),
+        )
+        assert status == 201
+
     with open(str(FHIR_EXAMPLE_RESOURCES / "Patient.json"), "r") as fp:
         data = json.load(fp)
 
@@ -369,6 +451,57 @@ async def init_data(requester):
                 "title": "Prescription",
                 "id": data["id"],
                 "medicationrequest_resource": data,
+            }
+        ),
+    )
+    assert status == 201
+
+    with open(str(FHIR_EXAMPLE_RESOURCES / "ParentTask.json"), "r") as fp:
+        json_value = json.load(fp)
+
+    resp, status = await requester(
+        "POST",
+        "/db/guillotina/",
+        data=json.dumps(
+            {
+                "@type": "Task",
+                "title": json_value["description"],
+                "id": json_value["id"],
+                "task_resource": json_value,
+            }
+        ),
+    )
+    assert status == 201
+
+    with open(str(FHIR_EXAMPLE_RESOURCES / "SubTask_HAQ.json"), "r") as fp:
+        json_value = json.load(fp)
+
+    resp, status = await requester(
+        "POST",
+        "/db/guillotina/",
+        data=json.dumps(
+            {
+                "@type": "Task",
+                "title": "Subtask HAQ-" + json_value["id"],
+                "id": json_value["id"],
+                "task_resource": json_value,
+            }
+        ),
+    )
+    assert status == 201
+
+    with open(str(FHIR_EXAMPLE_RESOURCES / "SubTask_CRP.json"), "r") as fp:
+        json_value = json.load(fp)
+
+    resp, status = await requester(
+        "POST",
+        "/db/guillotina/",
+        data=json.dumps(
+            {
+                "@type": "Task",
+                "title": "Subtask CRP-" + json_value["id"],
+                "id": json_value["id"],
+                "task_resource": json_value,
             }
         ),
     )
