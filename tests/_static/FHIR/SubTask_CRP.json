@@ -23,7 +23,7 @@
         "display": "Lipid Panel"
       }
     ],
-    "status": "accepted",
+    "status": "draft",
     "businessStatus": {
       "text": "waiting for patient"
     },
@@ -43,7 +43,7 @@
       "display": "BloodDraw ServiceRequest"
     },
     "for": {
-      "reference": "Patient/example",
+      "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e",
       "display": "Peter James Chalmers"
     },
     "encounter": {

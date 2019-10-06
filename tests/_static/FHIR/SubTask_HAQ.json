@@ -34,7 +34,7 @@
             "reference": "ProcedureRequest/0c57a6c9-c275-4a0a-bd96-701daf7bd7ce"
         }
     ],
-    "status": "accepted",
+    "status": "ready",
     "businessStatus": {
         "text": "waiting for patient"
     },
@@ -54,7 +54,7 @@
         "display": "BloodDraw ServiceRequest"
     },
     "for": {
-        "reference": "Patient/example",
+        "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e",
         "display": "Peter James Chalmers"
     },
     "encounter": {
@@ -65,7 +65,7 @@
         "start": "2016-10-31T08:45:05+10:00"
     },
     "authoredOn": "2018-08-05T06:16:41+00:00",
-    "lastModified": "2018-08-05T06:16:41+00:00",
+    "lastModified": "2018-01-15T06:31:18+00:00",
     "requester": {
         "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
         "display": "Clinical Laboratory @ Acme Hospital"
@@ -83,7 +83,7 @@
         }
     ],
     "owner": {
-        "reference": "Organization/1832473e-2fe0-452d-abe9-3cdb9879522f",
+        "reference": "Patient/19c5245f-89a8-49f8-b244-666b32adb92e",
         "display": "Clinical Laboratory @ Acme Hospital"
     },
     "restriction": {

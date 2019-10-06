@@ -294,6 +294,52 @@ class MedicationRequest(Item):
     resource_type = "MedicationRequest"
 
 
+class IEncounter(IFhirContent, IContentIndex):
+
+    index_field(
+        "encounter_resource",
+        type="object",
+        field_mapping=fhir_resource_mapping("Encounter"),
+        fhirpath_enabled=True,
+        resource_type="Encounter",
+        fhir_version=FHIR_VERSION.DEFAULT,
+    )
+    encounter_resource = FhirField(
+        title="Encounter Resource", resource_type="Encounter", fhir_version="R4"
+    )
+
+
+@configure.contenttype(type_name="Encounter", schema=IEncounter)
+class Encounter(Folder):
+    """ """
+
+    index(schemas=[IEncounter], settings={})
+    resource_type = "Encounter"
+
+
+class IObservation(IFhirContent, IContentIndex):
+
+    index_field(
+        "observation_resource",
+        type="object",
+        field_mapping=fhir_resource_mapping("Observation"),
+        fhirpath_enabled=True,
+        resource_type="Observation",
+        fhir_version=FHIR_VERSION.DEFAULT,
+    )
+    observation_resource = FhirField(
+        title="Observation Resource", resource_type="Observation", fhir_version="R4"
+    )
+
+
+@configure.contenttype(type_name="Observation", schema=IObservation)
+class Observation(Folder):
+    """ """
+
+    index(schemas=[IObservation], settings={})
+    resource_type = "Observation"
+
+
 @configure.service(
     context=IContainer,
     method="GET",
@@ -473,6 +519,23 @@ async def init_data(requester):
     )
     assert status == 201
 
+    with open(str(FHIR_EXAMPLE_RESOURCES / "SubTask_CRP.json"), "r") as fp:
+        data = json.load(fp)
+
+    resp, status = await requester(
+        "POST",
+        "/db/guillotina/",
+        data=json.dumps(
+            {
+                "@type": "Task",
+                "title": "Subtask CRP-" + data["id"],
+                "id": data["id"],
+                "task_resource": data,
+            }
+        ),
+    )
+    assert status == 201
+
     with open(str(FHIR_EXAMPLE_RESOURCES / "SubTask_HAQ.json"), "r") as fp:
         json_value = json.load(fp)
 
@@ -490,7 +553,7 @@ async def init_data(requester):
     )
     assert status == 201
 
-    with open(str(FHIR_EXAMPLE_RESOURCES / "SubTask_CRP.json"), "r") as fp:
+    with open(str(FHIR_EXAMPLE_RESOURCES / "Encounter.json"), "r") as fp:
         json_value = json.load(fp)
 
     resp, status = await requester(
@@ -498,14 +561,34 @@ async def init_data(requester):
         "/db/guillotina/",
         data=json.dumps(
             {
-                "@type": "Task",
-                "title": "Subtask CRP-" + json_value["id"],
+                "@type": "Encounter",
+                "title": "Encounter-" + json_value["id"],
                 "id": json_value["id"],
-                "task_resource": json_value,
+                "encounter_resource": json_value,
             }
         ),
     )
     assert status == 201
+
+    with open(str(FHIR_EXAMPLE_RESOURCES / "Observation.json"), "r") as fp:
+        json_value = json.load(fp)
+
+    resp, status = await requester(
+        "POST",
+        "/db/guillotina/",
+        data=json.dumps(
+            {
+                "@type": "Observation",
+                "title": "Observation-" + json_value["id"],
+                "id": json_value["id"],
+                "observation_resource": json_value,
+            }
+        ),
+    )
+    assert status == 201
+
+    # Required some rest!
+    await asyncio.sleep(1)
 
 
 async def load_organizations_data(requester, count=1):

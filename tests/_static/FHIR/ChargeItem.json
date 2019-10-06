@@ -1,10 +1,6 @@
 {
     "resourceType": "ChargeItem",
     "id": "example-charge-item",
-    "text": {
-      "status": "generated",
-      "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Example of ChargeItem Usage in Context of the German EBM Billing code system</div>"
-    },
     "identifier": [
       {
         "system": "http://myHospital.org/ChargeItems",
@@ -18,10 +14,12 @@
     "code": {
       "coding": [
         {
-          "code": "01510",
-          "display": "Zusatzpauschale für Beobachtung nach diagnostischer Koronarangiografie"
-        }
-      ]
+            "code": "F01510",
+            "display": "Zusatzpauschale",
+            "system": "http://snomed.info/sct"
+          }
+      ],
+      "text": "Nice Code"
     },
     "subject": {
       "reference": "Patient/example"
@@ -76,7 +74,7 @@
       }
     },
     "quantity": {
-      "value": 1
+      "value": 5
     },
     "factorOverride": 0.8,
     "priceOverride": {

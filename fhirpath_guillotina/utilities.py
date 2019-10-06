@@ -70,6 +70,7 @@ class SearchContextFactory:
         )
 
     def __call__(self, resource_type, fhir_version=None, unrestricted=False):
+
         return self.get(resource_type, fhir_version, unrestricted)
 
 
@@ -87,6 +88,7 @@ class FhirSearch:
     ):
         """ """
         if context is None:
+            assert resource_type is not None
             context = self.create_context(resource_type, fhir_version, unrestricted)
 
         return fhir_search(context, params=params)
