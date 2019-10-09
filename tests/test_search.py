@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # All imports here
 
+import copy
 import datetime
+import json
+import uuid
 
 import isodate
 from fhirpath.interfaces import ISearchContextFactory
@@ -14,29 +17,8 @@ from fhirpath_guillotina.interfaces import IFhirSearch
 from .fixtures import FHIR_EXAMPLE_RESOURCES
 from .fixtures import init_data
 
-import json
-import copy
-import uuid
 
 __author__ = "Md Nazrul Islam (email2nazrul@gmail.com)"
-
-
-# def get_es_catalog(self):
-#     """ """
-#     return ElasticSearchCatalog(api.portal.get_tool("portal_catalog"))
-
-# def get_factory(self, resource_type, unrestricted=False):
-#     """ """
-#     factory = queryMultiAdapter(
-#             (self.get_es_catalog(),), IElasticsearchEngineFactory
-#         )
-#         engine = factory(fhir_version=FHIR_VERSION.STU3)
-#         context = queryMultiAdapter((engine,), ISearchContextFactory)(
-#             resource_type, unrestricted=unrestricted
-#         )
-
-#         factory = queryMultiAdapter((context,), IFhirSearch)
-#         return factory
 
 
 async def test_fhir_date_param(es_requester):

@@ -34,14 +34,14 @@ setup(
     author="Md Nazrul Islam",
     author_email="email2nazrul@gmail.com",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
     description="A guillotina framework powered fhirpath provider.",
     project_urls={
@@ -71,6 +71,6 @@ setup(
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/nazrulworld/fhirpath_guillotina",
-    version="0.1.1.dev0",
+    version="0.2.0.dev0",
     zip_safe=False,
 )
