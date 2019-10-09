@@ -3,6 +3,7 @@
 
 """Tests for `guillotina_fhirfield` package."""
 
+import json
 import os
 import pathlib
 import pickle
@@ -24,7 +25,6 @@ from guillotina.schema.exceptions import WrongType
 from zope.interface import Invalid
 from zope.interface import implementer
 
-import ujson as json
 from fhirpath_guillotina.field import FhirField
 from fhirpath_guillotina.field import FhirFieldValue
 from fhirpath_guillotina.field import fhir_field_from_resource_type
@@ -58,9 +58,7 @@ def test_field_init_validate(dummy_guillotina):  # noqa: C901,E999
         FhirField(
             title="Organization resource",
             resource_class="tests.fixtures.MyOrganizationResource",
-            resource_interface=(
-                "fhirpath_guillotina.interfaces.IFhirResource"
-            ),
+            resource_interface=("fhirpath_guillotina.interfaces.IFhirResource"),
             fhir_version="R4",
         )
     except Invalid as exc:
@@ -226,9 +224,7 @@ def test_field_validate(dummy_guillotina):
         fhir_field._validate(dict(hello="wrong"))
         raise AssertionError("Code should not come here! wrong data type is provide")
     except WrongType as exc:
-        assert "fhirpath_guillotina.field.FhirFieldValue" in str(
-            exc
-        )
+        assert "fhirpath_guillotina.field.FhirFieldValue" in str(exc)
 
     type_, address_ = fhir_resource_value.type, fhir_resource_value.address
     fhir_resource_value.type = 390
@@ -651,46 +647,44 @@ async def test_fhir_field_schema_serializer(dummy_request):
 async def test_schema_serializer_with_fhir_field(dummy_request):
     """ """
     serializer = get_multi_adapter(
-        (IOrganization, dummy_request),
-        ISchemaSerializeToJson)
+        (IOrganization, dummy_request), ISchemaSerializeToJson
+    )
 
     serialized_schema = await serializer()
-    assert 'organization_resource' in serialized_schema['properties']
-    assert 'organization_resource' in serialized_schema['required']
+    assert "organization_resource" in serialized_schema["properties"]
+    assert "organization_resource" in serialized_schema["required"]
 
 
 async def test_factory_serializer_with_fhir_field(dummy_request):
     """ """
-    factory = get_utility(IResourceFactory, name='Organization')
+    factory = get_utility(IResourceFactory, name="Organization")
 
-    serializer = get_multi_adapter(
-        (factory, dummy_request),
-        IFactorySerializeToJson)
+    serializer = get_multi_adapter((factory, dummy_request), IFactorySerializeToJson)
 
     serialized_factory = await serializer()
-    assert 'organization_resource' in serialized_factory['properties']
-    assert 'organization_resource' in serialized_factory['required']
+    assert "organization_resource" in serialized_factory["properties"]
+    assert "organization_resource" in serialized_factory["required"]
 
 
 async def test_fhir_field_from_schema(dummy_guillotina):
     """ """
-    expected_fhir_field = fhir_field_from_schema(IOrganization, 'Organization')
+    expected_fhir_field = fhir_field_from_schema(IOrganization, "Organization")
 
     assert expected_fhir_field is not None
 
     assert IFhirField.providedBy(expected_fhir_field)
     # test with mismatched resource type
-    assert fhir_field_from_schema(IOrganization, 'Patient') is None
+    assert fhir_field_from_schema(IOrganization, "Patient") is None
 
 
 async def test_fhir_field_from_resource_type(dummy_guillotina):
     """ """
-    fields = fhir_field_from_resource_type('Organization')
+    fields = fhir_field_from_resource_type("Organization")
     assert len(fields) == 1
-    assert 'organization_resource' in fields
+    assert "organization_resource" in fields
 
     # test non existing
-    assert fhir_field_from_resource_type('Provenance') is None
+    assert fhir_field_from_resource_type("Provenance") is None
 
     with pytest.raises(Invalid):
-        fhir_field_from_resource_type('FakeResource')
+        fhir_field_from_resource_type("FakeResource")

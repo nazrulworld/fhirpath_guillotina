@@ -15,7 +15,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "Click>=6.0",
-    "guillotina>4.8.13",
+    "guillotina>5.0.0",
     "guillotina_elasticsearch",
     "fhirpath",
 ]
@@ -39,7 +39,6 @@ setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
@@ -68,6 +67,7 @@ setup(
         "test": test_requirements + setup_requirements,
         "docs": docs_requirements,
     },
+    python_requires=", ".join((">=3.7", )),
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/nazrulworld/fhirpath_guillotina",
