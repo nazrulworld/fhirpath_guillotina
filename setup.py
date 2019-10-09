@@ -22,7 +22,12 @@ requirements = [
 
 setup_requirements = ["pytest-runner"]
 
-test_requirements = ["pytest", "pytest-mock", "pytest-docker-fixtures"]
+test_requirements = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-docker-fixtures",
+]
 docs_requirements = [
     "sphinx",
     "sphinx-rtd-theme",
