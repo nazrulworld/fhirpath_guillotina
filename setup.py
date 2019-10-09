@@ -15,7 +15,7 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "Click>=6.0",
-    "guillotina>=4.8.13",
+    "guillotina>4.8.13",
     "guillotina_elasticsearch",
     "fhirpath",
 ]

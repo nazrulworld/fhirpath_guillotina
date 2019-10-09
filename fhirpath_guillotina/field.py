@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import inspect
+import json
 from collections import OrderedDict
 from typing import NewType
 from typing import Union
@@ -32,8 +33,6 @@ from zope.interface.exceptions import BrokenMethodImplementation
 from zope.interface.exceptions import DoesNotImplement
 from zope.interface.interfaces import IInterface
 from zope.interface.verify import verifyObject
-
-import ujson
 
 from .helpers import parse_json_str
 from .interfaces import IFhirField
@@ -94,7 +93,7 @@ class FhirFieldValue(object):
 
         return (
             self._resource_obj is not None
-            and ujson.dumps(self._resource_obj.as_json(), **params)
+            and json.dumps(self._resource_obj.as_json(), **params)
             or ""
         )
 
