@@ -64,11 +64,12 @@ Ready to contribute? Here's how to set up `fhirpath_guillotina` for local develo
 
     $ git clone git@github.com:your_name_here/fhirpath_guillotina.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. Assuming you have ``pipenv`` installed, this is how you set up your fork for local development::
 
-    $ mkvirtualenv fhirpath_guillotina
     $ cd fhirpath_guillotina/
-    $ python setup.py develop
+    $ pipenv install --dev -e .[test]
+    $ pipenv shell
+    $ pytest tests
 
 4. Create a branch for local development::
 
@@ -79,8 +80,8 @@ Ready to contribute? Here's how to set up `fhirpath_guillotina` for local develo
 5. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
 
-    $ flake8 fhirpath_guillotina tests
-    $ python setup.py test or py.test
+    $ make lint
+    $ pytest tests
     $ tox
 
    To get flake8 and tox, just pip install them into your virtualenv.
@@ -102,7 +103,7 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 2.7, 3.4, 3.5 and 3.6, and for PyPy. Check
+3. The pull request should work for Python 3.7, 3.8, and optionally for PyPy. Check
    https://travis-ci.org/nazrulworld/fhirpath_guillotina/pull_requests
    and make sure that the tests pass for all supported Python versions.
 
@@ -111,7 +112,7 @@ Tips
 
 To run a subset of tests::
 
-$ py.test tests.test_fhirpath_guillotina
+$ pytest tests.test_fhirpath_guillotina
 
 
 Deploying

@@ -1,6 +1,6 @@
-===================
-fhirpath-guillotina
-===================
+============
+Introduction
+============
 
 
 .. image:: https://img.shields.io/pypi/v/fhirpath_guillotina.svg
@@ -16,13 +16,14 @@ fhirpath-guillotina
 
 A guillotina framework powered fhirpath provider. Full battery included to use `fhirpath`_ more efficiently.
 
+If you don't know about FHIR® and HL7®, Please `have a look here <https://www.hl7.org/fhir/>`_.
 
 Quickstart
 ----------
 
 1. Make sure ``fhirpath_guillotina`` is added as addon in your guillotina configure file.
 
-2. Make elasticsearch server configured properly.
+2. Make sure elasticsearch server configured properly.
 
 3. Make sure you have FHIR resource contenttypes registered (see example bellow).
 
@@ -115,4 +116,4 @@ This package skeleton was created with Cookiecutter_ and the `audreyr/cookiecutt
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`fhirpath`: https://fhirpath.readthedocs.io/en/latest/
+.. _`fhirpath`: https://pypi.org/project/fhirpath/
