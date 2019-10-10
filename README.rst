@@ -4,7 +4,7 @@ Introduction
 
 
 .. image:: https://img.shields.io/pypi/v/fhirpath_guillotina.svg
-        :target: https://pypi.python.org/pypi/fhirpath_guillotina
+        :target: https://pypi.org/project/fhirpath/
 
 .. image:: https://img.shields.io/travis/nazrulworld/fhirpath_guillotina.svg
         :target: https://travis-ci.org/nazrulworld/fhirpath_guillotina
@@ -12,6 +12,10 @@ Introduction
 .. image:: https://readthedocs.org/projects/fhirpath-guillotina/badge/?version=latest
         :target: https://fhirpath-guillotina.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
+
+.. image:: https://codecov.io/gh/nazrulworld/fhirpath_guillotina/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/nazrulworld/fhirpath_guillotina
+  :alt: Test Coverage
 
 
 A guillotina framework powered fhirpath provider. Full battery included to use `fhirpath`_ more efficiently.
