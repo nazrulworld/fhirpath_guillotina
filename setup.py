@@ -17,7 +17,7 @@ requirements = [
     "Click>=6.0",
     "guillotina>5.0.0",
     "guillotina_elasticsearch",
-    "fhirpath",
+    "fhirpath>=0.4.0",
 ]
 
 setup_requirements = ["pytest-runner"]
