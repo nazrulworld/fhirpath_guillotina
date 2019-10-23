@@ -1,3 +1,6 @@
+fhirpath>=0.4.0
+guillotina>=5.0.15
+guillotina-elasticsearch>=5.0.0
 aioelasticsearch==0.5.2
 aiohttp==3.5.4
 alabaster==0.7.12
@@ -26,12 +29,9 @@ docutils==0.15.2
 elasticsearch==6.4.0
 entrypoints==0.3
 fhir.resources==5.0.1
-fhirpath>=0.4.0
 filelock==3.0.12
 flake8==3.7.8
 flake8-isort==2.7.0
-guillotina==5.0.15
-guillotina-elasticsearch==5.0.0a2
 idna==2.8
 imagesize==1.1.0
 importlib-metadata==0.23

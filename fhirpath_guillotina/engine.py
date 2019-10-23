@@ -114,7 +114,9 @@ class ElasticsearchEngine(BaseEngine):
         # xxx: process result
         result = await self.process_raw_result(raw_result, source_filters)
         # Process additional meta
-        self._add_result_headers(query, result, source_filters, compiled)
+        self._add_result_headers(
+            query, result, source_filters, compiled, field_index_name
+        )
 
         return result
 

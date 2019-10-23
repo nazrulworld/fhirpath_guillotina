@@ -2,10 +2,12 @@
 History
 =======
 
-0.2.1 (unreleased)
+0.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Improvements
+
+- supports ``https://pypi.org/project/fhirpath/`` 0.4.0 or later version.
 
 
 0.2.0 (2019-10-10)
