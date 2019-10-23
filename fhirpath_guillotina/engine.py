@@ -7,6 +7,7 @@ from fhirpath.engine import EngineResult
 from fhirpath.engine import EngineResultBody
 from fhirpath.engine import EngineResultHeader
 from fhirpath.engine.es import ElasticsearchEngine as BaseEngine
+from fhirpath.enums import EngineQueryType
 from fhirpath.enums import GroupType
 from fhirpath.enums import MatchType
 from fhirpath.fql import G_
@@ -53,14 +54,26 @@ class ElasticsearchConnection(BaseConnection):
             )
         return info
 
-    async def fetch(self, compiled_query):
+    async def fetch(self, index, compiled_query):
         """xxx: must have use scroll+slice
         https://stackoverflow.com/questions/43211387/what-does-elasticsearch-automatic-slicing-do
         https://stackoverflow.com/questions/50376713/elasticsearch-scroll-api-with-multi-threading
         """
-        search_params = self.finalize_search_params(compiled_query)
+        search_params = self.finalize_search_params(compiled_query, EngineQueryType.DML)
         conn = self.raw_connection
-        result = await conn.search(**search_params)
+        index_ = await index
+        result = await conn.search(index=index_, **search_params)
+        self._evaluate_result(result)
+        return result
+
+    async def count(self, index, compiled_query):
+        """ """
+        index_ = await index
+        search_params = self.finalize_search_params(
+            compiled_query, EngineQueryType.COUNT
+        )
+        conn = self.raw_connection
+        result = await conn.count(index=index_, **search_params)
         self._evaluate_result(result)
         return result
 
@@ -85,15 +98,23 @@ class ElasticsearchEngine(BaseEngine):
 
         return await index_manager.get_index_name()
 
-    async def execute(self, query, unrestricted=False):
+    async def execute(self, query, unrestricted=False, query_type=EngineQueryType.DML):
         """ """
         # for now we support single from resource
-        awaitable, field_index_name, compiled = self._execute(query, unrestricted)
+        awaitable, field_index_name, compiled = self._execute(
+            query, unrestricted, query_type
+        )
         raw_result = await awaitable
 
+        if query_type == EngineQueryType.COUNT:
+            source_filters = []
+        else:
+            source_filters = self._get_source_filters(query, field_index_name)
+
         # xxx: process result
-        result = await self.process_raw_result(raw_result, field_index_name)
-        result.header.raw_query = self.connection.finalize_search_params(compiled)
+        result = await self.process_raw_result(raw_result, source_filters)
+        # Process additional meta
+        self._add_result_headers(query, result, source_filters, compiled)
 
         return result
 
@@ -189,39 +210,51 @@ class ElasticsearchEngine(BaseEngine):
                 return name, config
         return None, None
 
-    async def process_raw_result(self, rawresult, fieldname):
+    async def process_raw_result(self, rawresult, selects):
         """ """
-        header = EngineResultHeader(total=rawresult["hits"]["total"]["value"])
-        body = EngineResultBody()
+        if len(selects) == 0 and "count" in rawresult:
+            # Might be count API
+            total = rawresult["count"]
+        # let´s make some compabilities
+        elif isinstance(rawresult["hits"]["total"], dict):
+            total = rawresult["hits"]["total"]["value"]
+        else:
+            total = rawresult["hits"]["total"]
 
-        def extract(hits):
-            for res in hits:
-                if res["_type"] != "_doc":
-                    continue
-                if fieldname in res["_source"]:
-                    body.append(res["_source"][fieldname])
+        result = EngineResult(
+            header=EngineResultHeader(total=total), body=EngineResultBody()
+        )
+        if len(selects) == 0:
+            # Nothing would be in body
+            return result
 
         # extract primary data
-        extract(rawresult["hits"]["hits"])
+        self.extract_hits(selects, rawresult["hits"]["hits"], result.body)
 
-        if "_scroll_id" in rawresult and header.total > len(rawresult["hits"]["hits"]):
+        if "_scroll_id" in rawresult and result.header.total > len(
+            rawresult["hits"]["hits"]
+        ):
             # we need to fetch all!
             consumed = len(rawresult["hits"]["hits"])
 
-            while header.total > consumed:
+            while result.header.total > consumed:
                 # xxx: dont know yet, if from_, size is better solution
                 raw_res = await self.connection.scroll(rawresult["_scroll_id"])
                 if len(raw_res["hits"]["hits"]) == 0:
                     break
 
-                extract(raw_res["hits"]["hits"])
+                self.extract_hits(selects, raw_res["hits"]["hits"], result.body)
 
                 consumed += len(raw_res["hits"]["hits"])
 
-                if header.total <= consumed:
+                if result.header.total <= consumed:
                     break
 
-        return EngineResult(header=header, body=body)
+        return result
+
+    def extract_hits(self, selects, hits, container):
+        """ """
+        return BaseEngine.extract_hits(self, selects, hits, container, "_doc")
 
     def wrapped_with_bundle(self, result):
         """ """

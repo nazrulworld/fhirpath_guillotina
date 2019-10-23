@@ -52,13 +52,15 @@ async def test_raw_result(es_requester):
         query = Q_(resource="Organization", engine=engine)
 
         result_query = query.where(T_("Organization.active") == "true")(
-            async_result=True
+            async_result=True,
+            unrestricted=True
         )
         # Test scrol api! although default size is 100 but engine should collect all
         # by chunking based
         result = await result_query._engine.execute(
             result_query._query, result_query._unrestricted
         )
+        assert result.header.total > 0
         assert result.header.total == len(result.body)
 
         # Test limit works
@@ -115,7 +117,7 @@ async def test_single_query(es_requester):
 
         result = await builder(async_result=True).single()
         assert result is not None
-        assert isinstance(result, builder._from[0][1])
+        assert result[0]["resourceType"] == builder._from[0][0]
         # test empty result
         builder = Q_(resource="ChargeItem", engine=engine)
         builder = builder.where(not_(exists_("ChargeItem.enteredDate")))
@@ -150,7 +152,8 @@ async def test_first_query(es_requester):
         builder = builder.where(T_("Organization.active", "true"))
 
         result = await builder(async_result=True).first()
-        assert isinstance(result, builder._from[0][1])
+
+        assert result[0]["resourceType"] == builder._from[0][0]
 
         builder = Q_(resource="Organization", engine=engine)
         builder = builder.where(T_("Organization.active", "false"))

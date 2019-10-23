@@ -255,12 +255,7 @@ class FhirField(Object):
         return value
 
     def _init(
-        self,
-        resource_class,
-        resource_interface,
-        resource_type,
-        fhir_version,
-        **kw
+        self, resource_class, resource_interface, resource_type, fhir_version, **kw
     ):
         """ """
         if "default" in kw:
