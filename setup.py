@@ -23,7 +23,7 @@ requirements = [
 setup_requirements = ["pytest-runner"]
 
 test_requirements = [
-    "pytest",
+    "pytest>=5.4.0",
     "pytest-asyncio>=0.10.0",
     "pytest-cov",
     "pytest-mock",
@@ -37,6 +37,12 @@ docs_requirements = [
     "sphinxcontrib-httpexample",
 ]
 
+lint_requirements = [
+    "flake8==3.7.8",
+    "flake8-isort==2.7.0",
+    "isort",
+    "black"
+]
 setup(
     author="Md Nazrul Islam",
     author_email="email2nazrul@gmail.com",
@@ -74,11 +80,12 @@ setup(
     extras_require={
         "test": test_requirements + setup_requirements,
         "docs": docs_requirements,
+        "travis": test_requirements + setup_requirements + lint_requirements
     },
     python_requires=", ".join((">=3.7", )),
     test_suite="tests",
     tests_require=test_requirements,
     url="https://github.com/nazrulworld/fhirpath_guillotina",
-    version="0.3.1.dev0",
+    version="0.4.0.dev0",
     zip_safe=False,
 )
