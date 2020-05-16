@@ -1,119 +1,204 @@
 {
-    "mapping": {
+  "resourceType": "Medication",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:10+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "identifier": {
         "properties": {
-            "code": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "form": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "id": {
+          "use": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "system": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "value": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "type": {
+            "properties": {
+              "text": {
+                "type": "text",
                 "index": true,
                 "store": false,
-                "type": "keyword"
-            },
-            "isOverTheCounter": {
-                "store": false,
-                "type": "boolean"
-            },
-            "manufacturer": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "meta": {
-                "properties": {
-                    "lastUpdated": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "profile": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "versionId": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "resourceType": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "status": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
+                "analyzer": "standard"
+              }
             }
+          }
+        },
+        "type": "nested"
+      },
+      "code": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
         }
-    },
-    "meta": {
-        "lastUpdated": "2019-04-22T19:09:31+02:00",
-        "versionId": "STU3"
-    },
-    "resourceType": "Medication"
+      },
+      "status": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "manufacturer": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "form": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        }
+      },
+      "amount": {
+        "properties": {
+          "numerator": {
+            "properties": {
+              "value": {
+                "type": "float",
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "unit": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          },
+          "denominator": {
+            "properties": {
+              "value": {
+                "type": "float",
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "unit": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        }
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
 }

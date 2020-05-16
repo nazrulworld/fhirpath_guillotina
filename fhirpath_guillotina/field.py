@@ -31,6 +31,7 @@ from zope.interface import implementer
 from zope.interface.exceptions import BrokenImplementation
 from zope.interface.exceptions import BrokenMethodImplementation
 from zope.interface.exceptions import DoesNotImplement
+from zope.interface.exceptions import MultipleInvalid
 from zope.interface.interfaces import IInterface
 from zope.interface.verify import verifyObject
 
@@ -65,7 +66,9 @@ class FhirFieldValue(object):
             raise WrongType(
                 "patch value must be list or tuple type! but got `{0}` type.".format(
                     type(patch_data)
-                )
+                ),
+                type(patch_data),
+                None,
             )
 
         if not bool(self):
@@ -105,7 +108,11 @@ class FhirFieldValue(object):
         try:
             verifyObject(IFhirResource, obj, False)
 
-        except (BrokenImplementation, BrokenMethodImplementation) as exc:
+        except (
+            BrokenImplementation,
+            BrokenMethodImplementation,
+            MultipleInvalid,
+        ) as exc:
             return reraise(Invalid, str(exc))
 
         except DoesNotImplement as exc:
@@ -115,7 +122,7 @@ class FhirFieldValue(object):
             )
             msg += "\nOriginal Exception: {0!s}".format(exc)
 
-            return reraise(WrongType, msg)
+            return reraise(WrongType, msg, field_name=self.getName())
 
     def __init__(self, obj: FhirResourceType = None):
         """ """
@@ -127,7 +134,7 @@ class FhirFieldValue(object):
     def __getattr__(self, name):
         """Any attribute from FHIR Resource Object is accessible via this class"""
         try:
-            return super(FhirFieldValue, self).__getattr__(name)
+            return object.__getattribute__(self, name)
         except AttributeError:
             return getattr(self._resource_obj, name)
 
@@ -210,7 +217,7 @@ class FhirField(Object):
         resource_class=None,
         resource_interface=None,
         resource_type=None,
-        fhir_version=None,
+        fhir_release=None,
         **kw,
     ):
         """
@@ -224,7 +231,7 @@ class FhirField(Object):
         self.schema = IFhirFieldValue
 
         self._init(
-            resource_class, resource_interface, resource_type, fhir_version, **kw
+            resource_class, resource_interface, resource_type, fhir_release, **kw
         )
 
         if "default" in kw:
@@ -255,7 +262,7 @@ class FhirField(Object):
         return value
 
     def _init(
-        self, resource_class, resource_interface, resource_type, fhir_version, **kw
+        self, resource_class, resource_interface, resource_type, fhir_release, **kw
     ):
         """ """
         if "default" in kw:
@@ -296,12 +303,12 @@ class FhirField(Object):
             attribute_val = attribute.from_unicode(resource_type)
         attribute.set(self, attribute_val)
 
-        attribute = field_attributes["fhir_version"].bind(self)
-        if fhir_version is None:
-            attribute.validate(fhir_version)
+        attribute = field_attributes["fhir_release"].bind(self)
+        if fhir_release is None:
+            attribute.validate(fhir_release)
             attribute_val = None
         else:
-            attribute_val = attribute.from_unicode(fhir_version)
+            attribute_val = attribute.from_unicode(fhir_release)
             # just for ensure correct value
             FHIR_VERSION[attribute_val]
         attribute.set(self, attribute_val)
@@ -381,7 +388,9 @@ class FhirField(Object):
             raise WrongType(
                 "Only dict type data is allowed but got `{0}` type data!".format(
                     type(fhir_json)
-                )
+                ),
+                None,
+                self.getName(),
             )
 
         if "resourceType" not in fhir_dict.keys() or "id" not in fhir_dict.keys():
@@ -416,7 +425,8 @@ class FhirField(Object):
                 "Fhir Resource mismatched with provided resource type!\n"
                 "`{0}` resource type is permitted but got `{1}`".format(
                     klass.resource_type, dict_value.get("resourceType")
-                )
+                ),
+                field_name=self.getName(),
             )
 
         value = FhirFieldValue(obj=klass(dict_value))
@@ -445,7 +455,7 @@ class FhirField(Object):
             msg = (
                 "Resource type must be `{0}` but we got {1} " "which is not allowed!"
             ).format(self.resource_type, value.resource_type)
-            raise ConstraintNotSatisfied(msg)
+            raise ConstraintNotSatisfied(msg, field_name=self.getName())
 
         if self.resource_class:
             klass = self._resource_class
@@ -460,7 +470,7 @@ class FhirField(Object):
                     )
                 )
 
-                raise WrongContainedType(msg)
+                raise WrongContainedType(msg, field_name=self.getName())
 
         if value.foreground_origin() is not None:
             try:

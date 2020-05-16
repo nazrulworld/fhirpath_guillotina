@@ -1,210 +1,460 @@
 {
-    "mapping": {
+  "resourceType": "ChargeItem",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:10+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "identifier": {
         "properties": {
-            "account": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                },
-                "type": "nested"
-            },
-            "code": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "context": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "enteredDate": {
-                "format": "date_time_no_millis||date_optional_time",
-                "store": false,
-                "type": "date"
-            },
-            "enterer": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "factorOverride": {
-                "store": false,
-                "type": "float"
-            },
-            "id": {
+          "use": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "system": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "value": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "type": {
+            "properties": {
+              "text": {
+                "type": "text",
                 "index": true,
                 "store": false,
-                "type": "keyword"
-            },
-            "identifier": {
-                "properties": {
-                    "system": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "type": {
-                        "properties": {
-                            "text": {
-                                "analyzer": "standard",
-                                "index": true,
-                                "store": false,
-                                "type": "text"
-                            }
-                        }
-                    },
-                    "use": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "value": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "meta": {
-                "properties": {
-                    "lastUpdated": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "profile": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "versionId": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "performingOrganization": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "priceOverride": {
-                "properties": {
-                    "currency": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "value": {
-                        "index": true,
-                        "store": false,
-                        "type": "float"
-                    }
-                }
-            },
-            "quantity": {
-                "properties": {
-                    "code": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "system": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "unit": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "value": {
-                        "store": false,
-                        "type": "float"
-                    }
-                }
-            },
-            "requestingOrganization": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "resourceType": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "service": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                },
-                "type": "nested"
-            },
-            "subject": {
-                "properties": {
-                    "reference": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
+                "analyzer": "standard"
+              }
             }
+          }
+        },
+        "type": "nested"
+      },
+      "definitionUri": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "definitionCanonical": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "status": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "partOf": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "code": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
         }
-    },
-    "meta": {
-        "lastUpdated": "2019-04-22T19:09:31+02:00",
-        "versionId": "STU3"
-    },
-    "resourceType": "ChargeItem"
+      },
+      "subject": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "context": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "occurrenceDateTime": {
+        "type": "date",
+        "format": "date_time_no_millis||date_optional_time",
+        "store": false
+      },
+      "occurrencePeriod": {
+        "properties": {
+          "start": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "end": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        }
+      },
+      "occurrenceTiming": {
+        "properties": {
+          "event": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "code": {
+            "properties": {
+              "text": {
+                "type": "text",
+                "index": true,
+                "store": false,
+                "analyzer": "standard"
+              },
+              "coding": {
+                "type": "nested",
+                "properties": {
+                  "system": {
+                    "type": "keyword",
+                    "index": true,
+                    "store": false
+                  },
+                  "code": {
+                    "type": "keyword",
+                    "index": true,
+                    "store": false
+                  },
+                  "display": {
+                    "type": "keyword",
+                    "index": true,
+                    "store": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "performingOrganization": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "requestingOrganization": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "costCenter": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "quantity": {
+        "properties": {
+          "value": {
+            "type": "float",
+            "store": false
+          },
+          "code": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "system": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "unit": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "bodysite": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "factorOverride": {
+        "type": "float",
+        "store": false
+      },
+      "priceOverride": {
+        "properties": {
+          "value": {
+            "type": "float",
+            "store": false
+          },
+          "currency": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "overrideReason": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "enterer": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "enteredDate": {
+        "type": "date",
+        "format": "date_time_no_millis||date_optional_time",
+        "store": false
+      },
+      "reason": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "service": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "productReference": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "productCodeableConcept": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        }
+      },
+      "account": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "note": {
+        "properties": {
+          "authorReference": {
+            "properties": {
+              "reference": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          },
+          "authorString": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "time": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "supportingInformation": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
 }

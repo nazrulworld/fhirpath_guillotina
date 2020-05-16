@@ -15,18 +15,20 @@ with open("HISTORY.rst") as history_file:
 
 requirements = [
     "Click>=6.0",
-    "guillotina>5.0.0",
-    "guillotina_elasticsearch>=5.0.0",
-    "fhirpath>=0.4.0",
+    "guillotina>=5.3.39, <6.0.0a1",
+    "guillotina_elasticsearch==5.0.0",
+    "fhirpath>=0.6.1",
 ]
 
 setup_requirements = ["pytest-runner"]
 
 test_requirements = [
     "pytest",
+    "pytest-asyncio>=0.10.0",
     "pytest-cov",
     "pytest-mock",
     "pytest-docker-fixtures",
+    "async-asgi-testclient"
 ]
 docs_requirements = [
     "sphinx",

@@ -948,7 +948,7 @@ async def test_fhirpath_analizer(es_requester):
         factory = query_utility(IFhirSearch)
         context = query_utility(ISearchContextFactory).get("Task", unrestricted=True)
         # Should Get All Tasks
-        params = (("patient", "Patient"),)
+        params = (("patient:below", "Patient"),)
         bundle = await factory(params, context=context)
         assert bundle.total == 3
 
@@ -982,22 +982,22 @@ async def test_fhirpath_analizer(es_requester):
         )
 
         # Should One
-        params = (("subject", "Device"),)
+        params = (("subject", "saDevice"),)
         bundle = await factory(params, context=context)
         assert bundle.total == 1
 
         # Little bit complex
-        params = (("subject", "Device,Patient"),)
+        params = (("subject:below", "Device,Patient"),)
         bundle = await factory(params, context=context)
         assert len(bundle.entry) == 2
 
         # Search By Multiple Ids
         params = (
-            ("subject", device_id + ",Patient/19c5245f-89a8-49f8-b244-666b32adb92e"),
+            ("subject:above", device_id + ",19c5245f-89a8-49f8-b244-666b32adb92e"),
         )
         bundle = await factory(params, context=context)
         assert len(bundle.entry) == 2
 
-        params = (("subject", device_id),)
+        params = (("subject:above", device_id),)
         bundle = await factory(params, context=context)
         assert len(bundle.entry) == 1

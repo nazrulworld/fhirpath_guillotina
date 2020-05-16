@@ -13,7 +13,6 @@ zc-buildout = {version = "==2.13.1"}
 setuptools = {version = "==41.2.0"}
 
 [packages]
-fhirpath = {git = 'git+https://github.com/nazrulworld/fhirpath.git', ref = 'master'}
 sphinx = {version = "==1.8.5"}
 sphinx-rtd-theme = {version = "==0.4.3"}
 sphinxcontrib-httpdomain = {version = "==1.7.0"}

@@ -1,0 +1,56 @@
+{
+  "resourceType": "SubstanceReferenceInformation",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:11+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "comment": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
+}

@@ -1,222 +1,300 @@
 {
-    "mapping": {
+  "resourceType": "CarePlan",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:10+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "identifier": {
         "properties": {
-            "addresses": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "basedOn": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "careTeam": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "category": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "context": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "definition": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "goal": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "id": {
+          "use": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "system": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "value": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "type": {
+            "properties": {
+              "text": {
+                "type": "text",
                 "index": true,
                 "store": false,
-                "type": "keyword"
-            },
-            "identifier": {
-                "properties": {
-                    "system": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "type": {
-                        "properties": {
-                            "text": {
-                                "analyzer": "standard",
-                                "index": true,
-                                "store": false,
-                                "type": "text"
-                            }
-                        }
-                    },
-                    "use": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "value": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                },
-                "type": "nested"
-            },
-            "intent": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "meta": {
-                "properties": {
-                    "lastUpdated": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "profile": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "versionId": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "partOf": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "period": {
-                "properties": {
-                    "end": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "start": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    }
-                }
-            },
-            "replaces": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "resourceType": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "status": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "subject": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
+                "analyzer": "standard"
+              }
             }
+          }
+        },
+        "type": "nested"
+      },
+      "instantiatesCanonical": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "instantiatesUri": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "basedOn": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "replaces": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "partOf": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "status": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "intent": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "category": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "title": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "description": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "subject": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
         }
-    },
-    "meta": {
-        "lastUpdated": "2019-04-22T19:09:31+02:00",
-        "versionId": "STU3"
-    },
-    "resourceType": "CarePlan"
+      },
+      "encounter": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "period": {
+        "properties": {
+          "start": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "end": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        }
+      },
+      "created": {
+        "type": "date",
+        "format": "date_time_no_millis||date_optional_time",
+        "store": false
+      },
+      "author": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "contributor": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "careTeam": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "addresses": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "supportingInfo": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "goal": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "note": {
+        "properties": {
+          "authorReference": {
+            "properties": {
+              "reference": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          },
+          "authorString": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "time": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
 }

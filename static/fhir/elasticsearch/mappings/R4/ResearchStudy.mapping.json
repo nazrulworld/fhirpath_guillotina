@@ -1,271 +1,524 @@
 {
-    "mapping": {
+  "resourceType": "ResearchStudy",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:11+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "identifier": {
         "properties": {
-            "category": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "focus": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "id": {
+          "use": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "system": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "value": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "type": {
+            "properties": {
+              "text": {
+                "type": "text",
                 "index": true,
                 "store": false,
-                "type": "keyword"
-            },
-            "identifier": {
-                "properties": {
-                    "system": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "type": {
-                        "properties": {
-                            "text": {
-                                "analyzer": "standard",
-                                "index": true,
-                                "store": false,
-                                "type": "text"
-                            }
-                        }
-                    },
-                    "use": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "value": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                },
-                "type": "nested"
-            },
-            "jurisdiction": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "keyword": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "meta": {
-                "properties": {
-                    "lastUpdated": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "profile": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "versionId": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
-                }
-            },
-            "partOf": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "period": {
-                "properties": {
-                    "end": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "start": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    }
-                }
-            },
-            "principalInvestigator": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "protocol": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "resourceType": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "site": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "sponsor": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "status": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "title": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
+                "analyzer": "standard"
+              }
             }
+          }
+        },
+        "type": "nested"
+      },
+      "title": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "protocol": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "partOf": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "status": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "primaryPurposeType": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
         }
-    },
-    "meta": {
-        "lastUpdated": "2019-04-22T19:09:31+02:00",
-        "versionId": "STU3"
-    },
-    "resourceType": "ResearchStudy"
+      },
+      "phase": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        }
+      },
+      "category": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "focus": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "condition": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "contact": {
+        "properties": {
+          "name": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "telecom": {
+            "properties": {
+              "period": {
+                "properties": {
+                  "start": {
+                    "type": "date",
+                    "format": "date_time_no_millis||date_optional_time",
+                    "store": false
+                  },
+                  "end": {
+                    "type": "date",
+                    "format": "date_time_no_millis||date_optional_time",
+                    "store": false
+                  }
+                }
+              },
+              "rank": {
+                "type": "integer",
+                "store": false
+              },
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "use": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "value": {
+                "type": "text",
+                "index": true,
+                "store": false,
+                "analyzer": "standard"
+              }
+            },
+            "type": "nested"
+          }
+        },
+        "type": "nested"
+      },
+      "relatedArtifact": {
+        "properties": {
+          "type": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "url": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "resource": {
+            "properties": {
+              "reference": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          },
+          "label": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "display": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          }
+        },
+        "type": "nested"
+      },
+      "keyword": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "location": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "enrollment": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "period": {
+        "properties": {
+          "start": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "end": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        }
+      },
+      "sponsor": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "principalInvestigator": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "site": {
+        "properties": {
+          "reference": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "reasonStopped": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        }
+      },
+      "note": {
+        "properties": {
+          "authorReference": {
+            "properties": {
+              "reference": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          },
+          "authorString": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "time": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          }
+        },
+        "type": "nested"
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
 }

@@ -8,14 +8,14 @@ import pathlib
 import subprocess
 import uuid
 
+import fhirspec
 import pytest
 from fhir.resources.organization import Organization as fhir_org
 from fhir.resources.task import Task as fhir_task
 from fhirpath.connectors import create_connection
 from fhirpath.engine import create_engine
 from fhirpath.enums import FHIR_VERSION
-from fhirpath.fhirspec import DEFAULT_SETTINGS
-from fhirpath.thirdparty import attrdict
+from fhirpath.fhirspec import settings
 from fhirpath.utils import proxy
 from guillotina import configure
 from guillotina import testing
@@ -95,10 +95,18 @@ def base_settings_configurator(settings):
                 },
                 "filter": {},
                 "char_filter": {},
+            },
+            "mapping": {
+                "total_fields": {
+                    "limit": 5000
+                },
+                "depth": {"limit": 50},
+                "nested_fields": {
+                    "limit": 2500
+                },
             }
         },
     }
-
     settings["load_utilities"]["catalog"] = {
         "provides": "guillotina_elasticsearch.interfaces.IElasticSearchUtility",  # noqa
         "factory": "guillotina_elasticsearch.utility.ElasticSearchUtility",
@@ -122,9 +130,9 @@ def response():
 @pytest.fixture(scope="module")
 def fhir_spec_settings():
     """ """
-    settings = attrdict(DEFAULT_SETTINGS.copy())
+    config = fhirspec.Configuration.from_module(settings)
 
-    yield settings
+    yield config
 
 
 @pytest.fixture(scope="session")
@@ -178,12 +186,12 @@ class IOrganization(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Organization"),
         fhirpath_enabled=True,
         resource_type="Organization",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
     index_field("org_type", type="keyword")
     org_type = TextLine(title="Organization Type", required=False)
     organization_resource = FhirField(
-        title="Organization Resource", resource_type="Organization", fhir_version="R4"
+        title="Organization Resource", resource_type="Organization", fhir_release="R4"
     )
 
 
@@ -203,12 +211,12 @@ class IPatient(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Patient"),
         fhirpath_enabled=True,
         resource_type="Patient",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
     index_field("p_type", type="keyword")
     p_type = TextLine(title="Patient Type", required=False)
     patient_resource = FhirField(
-        title="Patient Resource", resource_type="Patient", fhir_version="R4"
+        title="Patient Resource", resource_type="Patient", fhir_release="R4"
     )
 
 
@@ -228,11 +236,11 @@ class IChargeItem(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("ChargeItem"),
         fhirpath_enabled=True,
         resource_type="ChargeItem",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
 
     chargeitem_resource = FhirField(
-        title="Charge Item Resource", resource_type="ChargeItem", fhir_version="R4"
+        title="Charge Item Resource", resource_type="ChargeItem", fhir_release="R4"
     )
 
 
@@ -252,11 +260,11 @@ class ITask(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Task"),
         fhirpath_enabled=True,
         resource_type="Task",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
 
     task_resource = FhirField(
-        title="Task Item Resource", resource_type="Task", fhir_version="R4"
+        title="Task Item Resource", resource_type="Task", fhir_release="R4"
     )
 
 
@@ -276,13 +284,13 @@ class IMedicationRequest(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("MedicationRequest"),
         fhirpath_enabled=True,
         resource_type="MedicationRequest",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
 
     medicationrequest_resource = FhirField(
         title="Medication Request Resource",
         resource_type="MedicationRequest",
-        fhir_version="R4",
+        fhir_release="R4",
     )
 
 
@@ -302,10 +310,10 @@ class IEncounter(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Encounter"),
         fhirpath_enabled=True,
         resource_type="Encounter",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
     encounter_resource = FhirField(
-        title="Encounter Resource", resource_type="Encounter", fhir_version="R4"
+        title="Encounter Resource", resource_type="Encounter", fhir_release="R4"
     )
 
 
@@ -325,10 +333,10 @@ class IObservation(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Observation"),
         fhirpath_enabled=True,
         resource_type="Observation",
-        fhir_version=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.DEFAULT,
     )
     observation_resource = FhirField(
-        title="Observation Resource", resource_type="Observation", fhir_version="R4"
+        title="Observation Resource", resource_type="Observation", fhir_release="R4"
     )
 
 

@@ -1,5 +1,5 @@
 # Config file for automatic testing at travis-ci.org
-dist: bionic
+dist: xenial
 language: python
 sudo: required
 services:
@@ -12,11 +12,16 @@ matrix:
       env: python_version=3.7
 
     - name: Python 3.8
-      python: 3.8-dev
+      python: 3.8
       env: python_version=3.8
 
+    -   name: Python 3.9
+            python: 3.9-dev
+            env: python_version=3.9-dev
+
   allow_failures:
-    - python: 3.8-dev
+    - python: 3.8
+    - python: 3.9-dev
 
 env:
   global:
@@ -28,7 +33,6 @@ cache:
 
 install:
   - pip install -U pip
-  - pip install -r requirements_dev.txt
   - pip install -e .[test]
   - pip install codecov
   - sleep 1

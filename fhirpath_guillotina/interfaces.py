@@ -41,7 +41,7 @@ class IFhirField(IObject):
         required=False,
     )
     resource_interface = DottedName(title="FHIR Resource Interface", required=False)
-    fhir_version = ASCIILine(title="FHIR Release Version", required=True)
+    fhir_release = ASCIILine(title="FHIR Release Version", required=True)
 
     def from_dict(dict_value):
         """ """

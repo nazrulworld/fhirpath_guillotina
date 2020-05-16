@@ -1,196 +1,199 @@
 {
-    "mapping": {
+  "resourceType": "NamingSystem",
+  "meta": {
+    "lastUpdated": "2020-03-15T16:44:10+06:00",
+    "versionId": "R4"
+  },
+  "mapping": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "status": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "kind": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "date": {
+        "type": "date",
+        "format": "date_time_no_millis||date_optional_time",
+        "store": false
+      },
+      "publisher": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "contact": {
         "properties": {
-            "contact": {
+          "name": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "telecom": {
+            "properties": {
+              "period": {
                 "properties": {
-                    "name": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "telecom": {
-                        "properties": {
-                            "period": {
-                                "properties": {
-                                    "end": {
-                                        "format": "date_time_no_millis||date_optional_time",
-                                        "store": false,
-                                        "type": "date"
-                                    },
-                                    "start": {
-                                        "format": "date_time_no_millis||date_optional_time",
-                                        "store": false,
-                                        "type": "date"
-                                    }
-                                }
-                            },
-                            "rank": {
-                                "store": false,
-                                "type": "integer"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "use": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "value": {
-                                "analyzer": "standard",
-                                "index": true,
-                                "store": false,
-                                "type": "text"
-                            }
-                        },
-                        "type": "nested"
-                    }
-                },
-                "type": "nested"
-            },
-            "date": {
-                "format": "date_time_no_millis||date_optional_time",
-                "store": false,
-                "type": "date"
-            },
-            "description": {
-                "analyzer": "standard",
-                "index": true,
-                "store": false,
-                "type": "text"
-            },
-            "id": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "jurisdiction": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                },
-                "type": "nested"
-            },
-            "kind": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "meta": {
-                "properties": {
-                    "lastUpdated": {
-                        "format": "date_time_no_millis||date_optional_time",
-                        "store": false,
-                        "type": "date"
-                    },
-                    "profile": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    },
-                    "versionId": {
-                        "index": true,
-                        "store": false,
-                        "type": "keyword"
-                    }
+                  "start": {
+                    "type": "date",
+                    "format": "date_time_no_millis||date_optional_time",
+                    "store": false
+                  },
+                  "end": {
+                    "type": "date",
+                    "format": "date_time_no_millis||date_optional_time",
+                    "store": false
+                  }
                 }
-            },
-            "name": {
+              },
+              "rank": {
+                "type": "integer",
+                "store": false
+              },
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "use": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "value": {
+                "type": "text",
                 "index": true,
                 "store": false,
-                "type": "keyword"
+                "analyzer": "standard"
+              }
             },
-            "publisher": {
+            "type": "nested"
+          }
+        },
+        "type": "nested"
+      },
+      "responsible": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "type": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
                 "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "replacedBy": {
-                "properties": {
-                    "reference": {
-                        "analyzer": "fhir_reference_analyzer",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
-            },
-            "resourceType": {
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
                 "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "responsible": {
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
                 "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "status": {
-                "index": true,
-                "store": false,
-                "type": "keyword"
-            },
-            "type": {
-                "properties": {
-                    "coding": {
-                        "properties": {
-                            "code": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "display": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            },
-                            "system": {
-                                "index": true,
-                                "store": false,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "nested"
-                    },
-                    "text": {
-                        "analyzer": "standard",
-                        "index": true,
-                        "store": false,
-                        "type": "text"
-                    }
-                }
+                "store": false
+              }
             }
+          }
         }
-    },
-    "meta": {
-        "lastUpdated": "2019-04-22T19:09:31+02:00",
-        "versionId": "STU3"
-    },
-    "resourceType": "NamingSystem"
+      },
+      "jurisdiction": {
+        "properties": {
+          "text": {
+            "type": "text",
+            "index": true,
+            "store": false,
+            "analyzer": "standard"
+          },
+          "coding": {
+            "type": "nested",
+            "properties": {
+              "system": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "code": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              },
+              "display": {
+                "type": "keyword",
+                "index": true,
+                "store": false
+              }
+            }
+          }
+        },
+        "type": "nested"
+      },
+      "usage": {
+        "type": "text",
+        "index": true,
+        "store": false,
+        "analyzer": "standard"
+      },
+      "id": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "meta": {
+        "properties": {
+          "versionId": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          },
+          "lastUpdated": {
+            "type": "date",
+            "format": "date_time_no_millis||date_optional_time",
+            "store": false
+          },
+          "profile": {
+            "type": "keyword",
+            "index": true,
+            "store": false
+          }
+        }
+      },
+      "implicitRules": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "language": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      },
+      "resourceType": {
+        "type": "keyword",
+        "index": true,
+        "store": false
+      }
+    }
+  }
 }
