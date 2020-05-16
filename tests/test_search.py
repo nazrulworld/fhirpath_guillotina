@@ -530,7 +530,7 @@ async def test_number_type_search(es_requester):
 
         bundle = await factory(params, context=context)
         assert bundle.total == 1
-        return
+
         # Test Issue#21
         with open(str(FHIR_EXAMPLE_RESOURCES / "ChargeItem.json"), "r") as fp:
             data = json.load(fp)

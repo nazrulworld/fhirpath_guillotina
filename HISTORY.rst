@@ -2,10 +2,14 @@
 History
 =======
 
-0.3.1 (unreleased)
+0.4.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+Improvements
+
+- supports ``fhirpath`` 0.6.1 or later version.
+
+- supports ``guillotina`` 5.3.x but not 6.x.x
 
 
 0.3.0 (2019-11-13)
