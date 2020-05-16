@@ -45,12 +45,12 @@ Example: Add Contents::
             field_mapping=fhir_resource_mapping("Organization"),
             fhirpath_enabled=True,
             resource_type="Organization",
-            fhir_version=FHIR_VERSION.DEFAULT,
+            fhir_release=FHIR_VERSION.R4,
         )
         index_field("org_type", type="keyword")
         org_type = TextLine(title="Organization Type", required=False)
         organization_resource = FhirField(
-            title="Organization Resource", resource_type="Organization", fhir_version="R4"
+            title="Organization Resource", resource_type="Organization", fhir_release="R4"
         )
 
 

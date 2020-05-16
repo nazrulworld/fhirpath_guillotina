@@ -186,7 +186,7 @@ class IOrganization(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Organization"),
         fhirpath_enabled=True,
         resource_type="Organization",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
     index_field("org_type", type="keyword")
     org_type = TextLine(title="Organization Type", required=False)
@@ -211,7 +211,7 @@ class IPatient(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Patient"),
         fhirpath_enabled=True,
         resource_type="Patient",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
     index_field("p_type", type="keyword")
     p_type = TextLine(title="Patient Type", required=False)
@@ -236,7 +236,7 @@ class IChargeItem(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("ChargeItem"),
         fhirpath_enabled=True,
         resource_type="ChargeItem",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
 
     chargeitem_resource = FhirField(
@@ -260,7 +260,7 @@ class ITask(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Task"),
         fhirpath_enabled=True,
         resource_type="Task",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
 
     task_resource = FhirField(
@@ -284,7 +284,7 @@ class IMedicationRequest(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("MedicationRequest"),
         fhirpath_enabled=True,
         resource_type="MedicationRequest",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
 
     medicationrequest_resource = FhirField(
@@ -310,7 +310,7 @@ class IEncounter(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Encounter"),
         fhirpath_enabled=True,
         resource_type="Encounter",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
     encounter_resource = FhirField(
         title="Encounter Resource", resource_type="Encounter", fhir_release="R4"
@@ -333,7 +333,7 @@ class IObservation(IFhirContent, IContentIndex):
         field_mapping=fhir_resource_mapping("Observation"),
         fhirpath_enabled=True,
         resource_type="Observation",
-        fhir_release=FHIR_VERSION.DEFAULT,
+        fhir_release=FHIR_VERSION.R4,
     )
     observation_resource = FhirField(
         title="Observation Resource", resource_type="Observation", fhir_release="R4"
