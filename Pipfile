@@ -10,7 +10,7 @@ isort = {version = "==4.3.21"}
 flake8 = {version = "==3.7.8"}
 flake8-isort = {version = "==2.7.0"}
 zc-buildout = {version = "==2.13.1"}
-setuptools = {version = "==41.2.0"}
+setuptools = {version = "==65.5.1"}
 
 [packages]
 sphinx = {version = "==1.8.5"}
